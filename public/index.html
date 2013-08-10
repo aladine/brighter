@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Brighter - Distraction Free Writing</title>
+  <title>Brighter - Anonymous Distraction Free Writing</title>
   <meta name="description" content="Writer is a distraction free writing tool. It is free to use!">
   <meta name="author" content="ytbryan, free writer, writing, focus, writing tool, writeroom, focuswriter, ommwriter, writemonkey, q10, brighter">
 
@@ -42,8 +42,11 @@
 
     </header>
     <div id="main" role="main">
-		<textarea cols="40" id="document_content" name="document[content]" rows="20" spellcheck="false"></textarea>
-    </div>
+	<span id="last_para" style="display:none;"></span>	
+	<label> Anonymous Mode</label>
+	<input id="persistent" type="checkbox"   class="gray underline" >	
+	<textarea cols="40" id="document_content" name="document[content]" rows="20" spellcheck="false" placeholder="Start type here"></textarea> 
+   </div>
     <footer>
 
     </footer>
@@ -55,7 +58,7 @@
   <!-- end scripts-->
 
 <script type="text/javascript">
-
+/*
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-28011757-1']);
   _gaq.push(['_trackPageview']);
@@ -65,11 +68,11 @@
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-
+*/
 </script>
 <script type="text/javascript">
-
-	//Make TextArea Autoresize
+//var persistent = false;
+//s TextArea Autoresize
 	onload = function() 
 	{
 		var editor = new Behave({
@@ -86,6 +89,8 @@
 
 
 		var t = document.getElementsByTagName('textarea')[0];
+		var sp = document.getElementById('last_para');
+		//var persistent = false;
 		var offset= !window.opera ? (t.offsetHeight - t.clientHeight) : (t.offsetHeight + parseInt(window.getComputedStyle(t, null).getPropertyValue('border-top-width'))) ;
 
 		var resize 	= function(t) {
@@ -101,35 +106,81 @@
 			resize(t);
 		});
 		
-        //add word counter before textarea
+	        //add word counter before textarea
 		$("#document_content").counter(
 			{
 				type: 'word',
 				goal: 'sky',
 				text: true,
-			    count: 'up',
+			  	count: 'up',
 				msg:'words'
 			});
 		//begin blinking cursor by focusing textarea	
 		$("#document_content").focus();
 		
 		//Word Count fade out when user start to type
-		$("#document_content").keyup(function() {			
+		$("#document_content").keyup(function(e) {			
 			$("#document_content_counter").stop().animate({opacity:'0'});
+			var anom = $('#persistent').is(':checked');
+
+			if(anom) 
+			{
+				console.log('anom');
+				$("#document_content").stop().animate({opacity:'0'});
+				//console.log(e.keyCode);
+				//$(sp).stop().show().animate({opacity:'100'});
+			}else  {
+				console.log('non-anom');
+				$("#document_content").css('opacity','100');
+//				if($(sp).is(':visisble')  )  
+//$(sp).slideUp();
+//.stop().show().animate({opacity:'0'});
+
+			}			
+			//console.log(persistent);			
 			var textarea_content_array = $("#document_content").val().split("\n");
 			document.title = textarea_content_array[0];
+			var c = textarea_content_array.pop();
+			//if(c.length>200) 
+			$(sp).html((c.length>200) ?  c.substring(c.length - 200) : c);
+
 		});
 
 		$("#document_content_counter").hover(
 		function () {
 			$("#document_content_counter").stop().animate({opacity:'100'});
+			if($("#persistent").is(':checked')) {
+				 $("#document_content_counter a").hide();
+			}else  $("#document_content_counter a").show();
 		  }
 		);
+	         /* $('#document_content').hover(
+                function () {
+//console.log('hover');
+                        $('#document_content').animate({opacity:'100'});
+                  }
+                );
+*/
+
+//var c = $("#document_content").html();
+///$(sp).html(c);
 		
+//setTimeout(function(){location.reload();},20000);
 		
 		 $("#document_content_counter").append("<a class=\"gray underline\" onclick=\"window.print()\">Print</a>");	
 		 $("#document_content_counter").append("<a class=\"gray underline\" onclick=\"sendEmail('','');\">Email</a>");	
-		 //$("#document_content_counter").append("<a class=\"gray underline\" onclick=\"sendEmail('','');\">Copy</a>");	
+		 // $("body").append("<label> Persistent</label><input id=\"persitent\" type=\"checkbox\"  class=\"gray underline\" >");
+$("#persistent").bind('click',function(){
+	var	p = $(this).is(':checked');
+	console.log(p);
+	if(p) $(sp).slideDown();
+	else {
+$(sp).slideUp();
+ $("#document_content").css('opacity','100');
+}
+	$("#document_content").focus();
+});
+//$("#document_content_counter").append("<a class=\"gray underline\" onclick=\"sendEmail('','');\">Copy</a>");	
 
 	 	 //$("#document_content_counter").append("<a class=\"gray underline\" data-toggle=\"modal\" data-target=\"#myModal\">About</a>");	
 
@@ -139,22 +190,6 @@
 		
 	}
 
-
-
-	function fill_in_initial_text()
-	{
-		// 		Welcome!
-
-		// Brighter is a free focus writing tool that exists online.  
-
-		// It does not track your data. 
-		// There is no login. 
-		// There is no saving (Please take note).
-		// If you are on mac, cmd+f for full screen. I think it's ctrl + f for windows.
-		// It works on all modern internet browsers like Firefox, Chrome , Safari and IE9. 
-		// We use it everyday at our own company. 
-
-	}
 	
 	function sendEmail(subject, content)
 	{
