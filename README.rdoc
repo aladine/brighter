@@ -1,6 +1,8 @@
-== Brighter 
+== Invisible Diary 
 
-Brighter is an ultra simple, web-based, distraction free writer. Focus on writing, that's all it matters. 
+Invisible Diary is an ultra simple, web-based, distraction free writer. Focus on writing, that's all it matters. 
+
+Use invisible mode if you don't want anybody behind you to see all your text. 
 
 
 == Info
@@ -13,6 +15,8 @@ Brighter is an ultra simple, web-based, distraction free writer. Focus on writin
 
 4. Uses behave.js for IDE style behaviors.
 
+5. Invisible mode: to hide most parts of the text, only display the last 2 lines or the last paragraph.
 
 
 
+Thanks ytbryan for his original idea.
