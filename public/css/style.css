@@ -11,7 +11,7 @@ width: 800px;		height:400px;		margin: 0 auto;		margin-top:100px;overflow: hidden
 	opacity:100
 }
 */
-#last_para{ background-color:brown; color:white; font-size:20px; resize:none; line-spacing:200%; height:40px; display: block;
+#last_para{ background-color:#2E2E2E; color:white; font-size:20px; resize:none; line-spacing:200%; height:40px; display: block;
 width: 800px;           height:50px;           margin: 0 auto;   margin-bottom:10px;     margin-top:100px;overflow: hidden;
                 cursor:default;
                 outline:none; //remove blue border
