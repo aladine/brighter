@@ -10,7 +10,7 @@
   <title>Invisible Diary - A Distraction Free Writing</title>
   <meta name="description" content="Writer is a distraction free writing tool. It is free to use!">
   <meta name="author" content="aladine, free writer, writing, focus, writing tool, writeroom, focuswriter, ommwriter, writemonkey, q10">
-
+<link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
   <!-- ios web configuration -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="apple-touch-icon" sizes="114x114" href="img/touch-icon-iphone4.png" />
@@ -90,7 +90,9 @@
 		var t = document.getElementsByTagName('textarea')[0];
 		var sp = document.getElementById('last_para');
 		//var persistent = false;
-		var offset= !window.opera ? (t.offsetHeight - t.clientHeight) : (t.offsetHeight + parseInt(window.getComputedStyle(t, null).getPropertyValue('border-top-width'))) ;
+		var mouse_in = false;
+		var is_invisible =  false;
+		var offset = !window.opera ? (t.offsetHeight - t.clientHeight) : (t.offsetHeight + parseInt(window.getComputedStyle(t, null).getPropertyValue('border-top-width'))) ;
 
 		var resize 	= function(t) {
 			t.style.height = 'auto';
@@ -120,17 +122,17 @@
 		//Word Count fade out when user start to type
 		$("#document_content").keyup(function(e) {			
 			$("#document_content_counter").stop().animate({opacity:'0'});
-			var anom = $('#persistent').is(':checked');
+			//var anom = $('#persistent').is(':checked');
 
-			if(anom) 
+			if(is_invisible) 
 			{
 				//console.log('anom');
-				$("#document_content").stop().animate({opacity:'0'});
+				$("#document_content").stop().animate({opacity: mouse_in ? '5' : '0'}).css('color','#0F0F0F');
 				//console.log(e.keyCode);
 				//$(sp).stop().show().animate({opacity:'100'});
 			}else  {
 				//console.log('non-anom');
-				$("#document_content").css('opacity','100');
+				$("#document_content").css({'opacity':'100','color':'white'});
 //				if($(sp).is(':visisble')  )  
 //$(sp).slideUp();
 //.stop().show().animate({opacity:'0'});
@@ -153,13 +155,18 @@
 			}else  $("#document_content_counter a").show();
 		  }
 		);
-	         /* $('#document_content').hover(
+	        $('#document_content').hover(
                 function () {
 //console.log('hover');
-                        $('#document_content').animate({opacity:'100'});
-                  }
+			mouse_in = true;
+                        //if(is_invisible) $('#document_content').animate({opacity:'5'});
+                  },
+function(){
+	mouse_in = false;
+	//if(is_invisible) $('#document_content').animate({opacity:'0'});
+}
                 );
-*/
+
 
 //var c = $("#document_content").html();
 ///$(sp).html(c);
@@ -172,8 +179,13 @@
 $("#persistent").bind('click',function(){
 	var	p = $(this).is(':checked');
 //	console.log(p);
-	if(p) $(sp).slideDown();
-	else {
+	
+if(p) {
+	is_invisible =  true;
+	$(sp).slideDown();
+}	
+else {
+is_invisible =  false;
 $(sp).slideUp();
  $("#document_content").css('opacity','100');
 }
