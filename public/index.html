@@ -9,7 +9,7 @@
 
   <title>Invisible Diary - A Distraction Free Writing</title>
   <meta name="description" content="Writer is a distraction free writing tool. It is free to use!">
-  <meta name="author" content="aladine, free writer, writing, focus, writing tool, writeroom, focuswriter, ommwriter, writemonkey, q10">
+  <meta name="author" content="aladine, free writer, writing, focus, writing tool, writeroom, focuswriter, ommwriter, writemonkey, 無料の作家,書くこと,フォーカス,筆記具">
 <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
   <!-- ios web configuration -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -86,7 +86,24 @@
 			    autoIndent: 	true
 			});
 
-
+var hasStorage = (function() {
+      try {
+        localStorage.setItem('t', 1);
+        localStorage.removeItem('t');
+/*	var c = localStorage.getItem('content');
+if (!!c)  $("#document_content").val(c);
+console.log(c);
+  */      return true;
+      } catch(e) {
+        return false;
+      }
+    }());
+//alert(hasStorage);
+if(hasStorage){
+ var c = localStorage.getItem('content');
+if (!!c)  $("#document_content").val(c);
+//alert(c);
+}
 		var t = document.getElementsByTagName('textarea')[0];
 		var sp = document.getElementById('last_para');
 		//var persistent = false;
@@ -144,7 +161,9 @@
 			var c = textarea_content_array.pop();
 			//if(c.length>200) 
 			$(sp).html((c.length>200) ?  c.substring(c.length - 200) : c);
-
+			if(hasStorage) {
+				 localStorage.setItem('content', $("#document_content").val());
+			}
 		});
 
 		$("#document_content_counter").hover(
